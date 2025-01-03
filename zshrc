@@ -4,34 +4,39 @@
 # OS specific commands are in case statement below
 case `uname` in
   Darwin)
-    # commands for OS X
     # Default prompt
     PS1='%F{green}%n@%m%f:%F{cyan}%~$%f '
+
     # Alias for colorful ls output
     alias ls='CLICOLOR_FORCE=1 ls -G'
-    # nano from homebrew
+    # Path to nano installed from brew
     alias nano='${HOMEBREW_CELLAR}/nano/7.1/bin/nano'
-    
-    # Path to oh-my-zsh installation
+
+    export PATH=$PATH:$HOME/code
     export ZSH="$HOME/.oh-my-zsh"
     
     # oh-my-zsh plugins
     # Standard plugins can be found in $ZSH/plugins/
     # Custom plugins may be added to $ZSH_CUSTOM/plugins/
     plugins=(
-        git
-        git-prompt
-        percol
-        timer
-        )
+      git
+      git-prompt
+      percol
+      timer
+      web-search    # https://github.com/heytulsiprasad/ohmyzsh/blob/master/plugins/web-search/README.md
+      )
     
     # Load autosuggestions zsh plugin installed by brew
-    source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+    source $HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh
     # Load syntax-highlighting zsh plugin installed by brew
-    source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh   
+    source $HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+    HYPHEN_INSENSITIVE="true"
+
+    source $ZSH/oh-my-zsh.sh
+
   ;;
   Linux)
-    # commands for Linux
     # Default prompt - color codes - https://jonasjacek.github.io/colors/
     PS1='%F{76}%n@%m%f:%F{74}%~$%f '
     # Alias for colorful ls output
@@ -48,12 +53,8 @@ case `uname` in
     umask 0002
    
     # Path to oh-my-zsh installation
-    export ZSH="/home/valosek/.oh-my-zsh"
-   
-    # Fix folder permission issue cause by zsh plugin zsh-autosuggestions
-    # https://github.com/ohmyzsh/ohmyzsh/issues/6835#issuecomment-390216875
-    ZSH_DISABLE_COMPFIX=true
-    
+    export ZSH="$HOME/.oh-my-zsh"
+
     # oh-my-zsh plugins
     # Standard plugins can be found in $ZSH/plugins/
     # Custom plugins may be added to $ZSH_CUSTOM/plugins/
@@ -110,21 +111,25 @@ SAVEHIST=5000
 HISTFILE=~/.zsh_history
 
 # Aliases
-#alias ll='ls -lath --color=auto'
+alias nn='nano'
+alias fin='fslinfo'
+alias gag='git annex get'
+alias cd3='cd ../../..'
+alias cd4='cd ../../../..'
+alias l='ls -lath'
 alias ll='ls -lath'
 alias grep='grep --color=auto'
-#alias lh='ls -lath | head -10'
-#alias lt='ls -lath | tail -10'
+
 # Functions for ls in combination with head or tail commands with definable number of output lines
 function lh { if [ "$#" -eq 0 ];then num=10;else num=${1};fi; ls -lath | head -${num} }
 function lt { if [ "$#" -eq 0 ];then num=10;else num=${1};fi; ls -lath | tail -${num} }
-alias ff='fsleyes_preset'
 function column_tsv { column -t -s $'\t' ${1} }
 function column_csv { column -t -s $';' ${1} }
 
 # Functions for fetching useful nifti image header info using SCT
 function header { sct_image -i ${1} -header }
 function orientation { sct_image -i ${1} -header | grep -E qform_[xyz] | awk '{printf "%s", substr($2, 1, 1)}' }
+function dim { sct_image -i ${1} -header | grep dim | head -n 1}
 function pixdim { sct_image -i ${1} -header | grep pixdim }
 
 # Alias for which command (to have same behaviour as in bash)
@@ -137,11 +142,6 @@ alias suroot='sudo -E -s'
 
 # aliases for venv workflow
 # https://www.youtube.com/watch?v=fTs7yAIUiso
-#alias ae='deactivate &> /dev/null; source ./venv/bin/activate'
-#alias de='deactivate'
-
-# aliases for venv workflow
-# https://www.youtube.com/watch?v=fTs7yAIUiso
 # activate venv
 alias ae='deactivate &> /dev/null; source ./venv/bin/activate'
 # deactivate venv
@@ -149,10 +149,15 @@ alias de='deactivate'
 # create venv (and install requirements if requirements.txt file exists)
 function ce { python3 -m venv venv; echo "venv was created successfully"; if [ -f requirements.txt ]; then echo "requirements.txt file found, installing dependencies..."; source ./venv/bin/activate; pip install -r requirements.txt;fi } 
 
-# Use modern completion system
+
+# Fix folder permission issue cause by zsh plugin zsh-autosuggestions
+# https://github.com/ohmyzsh/ohmyzsh/issues/6835#issuecomment-390216875
+ZSH_DISABLE_COMPFIX=true
+# Use modern completion system using shell function compinit
+# http://zsh.sourceforge.net/Doc/Release/Completion-System.html#Initialization
 autoload -Uz compinit
-# Ignore insecure directories
-compinit -i # Ignore insecure directories
+# Silently ignore all insecure files and directories use the option
+compinit -i
 
 # Uncomment the following line to enable command auto-correction
 setopt correct
@@ -199,11 +204,67 @@ export PATH=$PATH:/usr/local/fsl/bin
 export FSLDIR=/usr/local/fsl
 . ${FSLDIR}/etc/fslconf/fsl.sh
 
+alias fsleyes='$HOME/miniconda3/envs/fsleyes/bin/fsleyes'
+alias ff='$HOME/code/fsleyes_preset/fsleyes_preset.sh'
+
+alias python='python3'
+alias pip='pip3'
+
 echo "FSLDIR            $FSLDIR"
+# Print SCT version into CLI
 echo "SCT_DIR           $SCT_DIR"
-
-# Python 3.8 installed from homebrew
-export PATH="/opt/homebrew/opt/python@3.8/bin:$PATH"
-
 # Print currently used python version into CLI
-echo "python3             $(python3 -V)"
+echo "python3           $(python3 -V)"
+echo "python            $(python -V)"
+
+copilot_what-the-shell () {
+TMPFILE=$(mktemp);
+trap 'rm -f $TMPFILE' EXIT;
+if /usr/local/bin/github-copilot-cli what-the-shell "$@" --shellout $TMPFILE; then
+  if [ -e "$TMPFILE" ]; then
+    FIXED_CMD=$(cat $TMPFILE);
+    print -s "$FIXED_CMD";
+    eval "$FIXED_CMD"
+  else
+    echo "Apologies! Extracting command failed"
+  fi
+else
+  return 1
+fi
+};
+alias '??'='copilot_what-the-shell';
+
+copilot_git-assist () {
+TMPFILE=$(mktemp);
+trap 'rm -f $TMPFILE' EXIT;
+if /usr/local/bin/github-copilot-cli git-assist "$@" --shellout $TMPFILE; then
+  if [ -e "$TMPFILE" ]; then
+    FIXED_CMD=$(cat $TMPFILE);
+    print -s "$FIXED_CMD";
+    eval "$FIXED_CMD"
+  else
+    echo "Apologies! Extracting command failed"
+  fi
+else
+  return 1
+fi
+};
+alias 'git?'='copilot_git-assist';
+
+copilot_gh-assist () {
+TMPFILE=$(mktemp);
+trap 'rm -f $TMPFILE' EXIT;
+if /usr/local/bin/github-copilot-cli gh-assist "$@" --shellout $TMPFILE; then
+  if [ -e "$TMPFILE" ]; then
+    FIXED_CMD=$(cat $TMPFILE);
+    print -s "$FIXED_CMD";
+    eval "$FIXED_CMD"
+  else
+    echo "Apologies! Extracting command failed"
+  fi
+else
+  return 1
+fi
+};
+alias 'gh?'='copilot_gh-assist';
+alias 'wts'='copilot_what-the-shell';
