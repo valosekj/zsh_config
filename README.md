@@ -18,7 +18,7 @@ NOTE on MacOS:
 
 ## Make zsh your default shell:
 
-```chsh -s /bin/zsh```
+```chsh -s $(which zsh)```
 
 (then logout and login)
 
@@ -47,7 +47,7 @@ Download/Install [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosugg
 On Linux:
 
 ```
-$ git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 ```
 
 Then add this plugin into your zshrc file
@@ -55,7 +55,7 @@ Then add this plugin into your zshrc file
 On MacOS:
 
 ```
-$ brew install zsh-autosuggestions
+brew install zsh-autosuggestions
 ```
 
 Note: Follow the [instructions](https://brew.sh) to isntall `brew`.
@@ -89,7 +89,7 @@ Install [syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighti
 On Linux:
 
 ```
-$ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 ```
 
 Then add this plugin into your zshrc file
