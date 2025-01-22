@@ -9,3 +9,11 @@ NANO_PATH="/usr/share/nano/"
 NANO_PATH=/opt/homebrew/Cellar/nano/5.9/share/nano 
 
 find ${NANO_PATH} -iname "*.nanorc" -exec echo include {} \; >> ~/.nanorc; echo -e "\nset constantshow" >> ~/.nanorc; echo "set autoindent" >> ~/.nanorc
+
+---------
+
+Then include following lines:
+
+```
+set constantshow    # to show line numbers
+```
