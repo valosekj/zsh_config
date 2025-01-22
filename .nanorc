@@ -17,4 +17,5 @@ Then include following lines:
 ```
 set constantshow    # to show line numbers
 set autoindent
+set linenumbers
 ```
