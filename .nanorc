@@ -7,8 +7,7 @@
 #NANO_PATH="/usr/local/share/nano/"
 #NANO_PATH="/usr/share/nano/"
 # MacOS and nano installed from brew
-#NANO_PATH=/opt/homebrew/Cellar/nano/5.9/share/nano
-NANO=PATH=/opt/homebrew/bin/nano
+NANO_PATH=/opt/homebrew/Cellar/nano/X.X/share/nano
 
 find ${NANO_PATH} -iname "*.nanorc" -exec echo include {} \; >> ~/.nanorc; echo -e "\nset constantshow" >> ~/.nanorc; echo "set autoindent" >> ~/.nanorc
 
