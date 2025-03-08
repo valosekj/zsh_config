@@ -204,6 +204,9 @@ export PATH=$PATH:/usr/local/fsl/bin
 export FSLDIR=/usr/local/fsl
 . ${FSLDIR}/etc/fslconf/fsl.sh
 
+# ITKsnap
+export PATH=/Applications/ITK-SNAP.app/Contents/bin:$PATH
+
 alias fsleyes='$HOME/miniconda3/envs/fsleyes/bin/fsleyes'
 alias ff='$HOME/code/fsleyes_preset/fsleyes_preset.sh'
 
