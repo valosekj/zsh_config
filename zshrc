@@ -217,54 +217,56 @@ echo "SCT_DIR           $SCT_DIR"
 echo "python3           $(python3 -V)"
 echo "python            $(python -V)"
 
+# Use GitHub Copilot to get shell commands from natural language descriptions.
 copilot_what-the-shell () {
-TMPFILE=$(mktemp);
-trap 'rm -f $TMPFILE' EXIT;
-if /usr/local/bin/github-copilot-cli what-the-shell "$@" --shellout $TMPFILE; then
-  if [ -e "$TMPFILE" ]; then
-    FIXED_CMD=$(cat $TMPFILE);
-    print -s "$FIXED_CMD";
-    eval "$FIXED_CMD"
-  else
-    echo "Apologies! Extracting command failed"
-  fi
-else
-  return 1
-fi
+    TMPFILE=$(mktemp);
+    trap 'rm -f $TMPFILE' EXIT;
+    if /opt/homebrew/bin/github-copilot-cli what-the-shell "$@" --shellout $TMPFILE; then
+      if [ -e "$TMPFILE" ]; then
+        FIXED_CMD=$(cat $TMPFILE);
+        print -s "$FIXED_CMD";
+        eval "$FIXED_CMD"
+      else
+        echo "Apologies! Extracting command failed"
+      fi
+    else
+      return 1
+    fi
 };
 alias '??'='copilot_what-the-shell';
 
+# Translate a natural language description of a git command to an actual git command.
 copilot_git-assist () {
-TMPFILE=$(mktemp);
-trap 'rm -f $TMPFILE' EXIT;
-if /usr/local/bin/github-copilot-cli git-assist "$@" --shellout $TMPFILE; then
-  if [ -e "$TMPFILE" ]; then
-    FIXED_CMD=$(cat $TMPFILE);
-    print -s "$FIXED_CMD";
-    eval "$FIXED_CMD"
-  else
-    echo "Apologies! Extracting command failed"
-  fi
-else
-  return 1
-fi
+    TMPFILE=$(mktemp);
+    trap 'rm -f $TMPFILE' EXIT;
+    if /opt/homebrew/bin/github-copilot-cli git-assist "$@" --shellout $TMPFILE; then
+      if [ -e "$TMPFILE" ]; then
+        FIXED_CMD=$(cat $TMPFILE);
+        print -s "$FIXED_CMD";
+        eval "$FIXED_CMD"
+      else
+        echo "Apologies! Extracting command failed"
+      fi
+    else
+      return 1
+    fi
 };
 alias 'git?'='copilot_git-assist';
 
+# Convert plain english to GitHub CLI commands.
 copilot_gh-assist () {
-TMPFILE=$(mktemp);
-trap 'rm -f $TMPFILE' EXIT;
-if /usr/local/bin/github-copilot-cli gh-assist "$@" --shellout $TMPFILE; then
-  if [ -e "$TMPFILE" ]; then
-    FIXED_CMD=$(cat $TMPFILE);
-    print -s "$FIXED_CMD";
-    eval "$FIXED_CMD"
-  else
-    echo "Apologies! Extracting command failed"
-  fi
-else
-  return 1
-fi
+    TMPFILE=$(mktemp);
+    trap 'rm -f $TMPFILE' EXIT;
+    if /opt/homebrew/bin/github-copilot-cli gh-assist "$@" --shellout $TMPFILE; then
+      if [ -e "$TMPFILE" ]; then
+        FIXED_CMD=$(cat $TMPFILE);
+        print -s "$FIXED_CMD";
+        eval "$FIXED_CMD"
+      else
+        echo "Apologies! Extracting command failed"
+      fi
+    else
+      return 1
+    fi
 };
 alias 'gh?'='copilot_gh-assist';
-alias 'wts'='copilot_what-the-shell';
