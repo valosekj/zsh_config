@@ -220,6 +220,8 @@ echo "SCT_DIR           $SCT_DIR"
 echo "python3           $(python3 -V)"
 echo "python            $(python -V)"
 
+alias 'ca'='conda activate'
+
 # Use GitHub Copilot to get shell commands from natural language descriptions.
 copilot_what-the-shell () {
     TMPFILE=$(mktemp);
