@@ -12,6 +12,16 @@ case `uname` in
     # Path to nano installed from brew
     alias nano='${HOMEBREW_CELLAR}/nano/7.1/bin/nano'
 
+    alias cd2='cd ../..'
+    alias cd3='cd ../../..'
+    alias cd4='cd ../../../..'
+
+    # copy the output of pwd to the clipboard (on MacOS)
+    function pwdc() {
+      printf "%s" "$PWD" | pbcopy
+      echo "  PWD copied to the clipboard"
+    }
+
     export PATH=$PATH:$HOME/code
     export ZSH="$HOME/.oh-my-zsh"
     
