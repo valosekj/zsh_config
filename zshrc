@@ -19,7 +19,7 @@ case `uname` in
     # copy the output of pwd to the clipboard (on MacOS)
     function pwdc() {
       printf "%s" "$PWD" | pbcopy
-      echo "  PWD copied to the clipboard"
+      echo "✅ PWD copied to the clipboard"
     }
 
     export PATH=$PATH:$HOME/code
