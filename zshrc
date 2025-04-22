@@ -142,6 +142,31 @@ function orientation { sct_image -i ${1} -header | grep -E qform_[xyz] | awk '{p
 function dim { sct_image -i ${1} -header | grep dim | head -n 1}
 function pixdim { sct_image -i ${1} -header | grep pixdim }
 
+# Count columns in CSV or TSV files
+count_cols() {
+  if [[ ! -f "$1" ]]; then
+    echo "Usage: count_cols <file.csv|file.tsv> [delimiter]"
+    return 1
+  fi
+
+  local file="$1"
+  local delim="$2"
+
+  # Auto-detect delimiter if not provided
+  if [[ -z "$delim" ]]; then
+    case "$file" in
+      *.tsv) delim=$'\t' ;;
+      *.csv) delim=',' ;;
+      *)
+        echo "Unknown file extension. Please provide a delimiter as second argument."
+        return 1
+        ;;
+    esac
+  fi
+
+  head -n 1 "$file" | tr "$delim" '\n' | wc -l
+}
+
 # Alias for which command (to have same behaviour as in bash)
 # https://stackoverflow.com/a/14196212/12605960
 alias which='whence -p'
