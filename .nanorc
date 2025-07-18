@@ -15,10 +15,18 @@ echo -e "\nset constantshow" >> ~/.nanorc
 echo "set autoindent" >> ~/.nanorc
 ---------
 
-Then include following lines:
+Or include manually the following lines:
 
-```
-set constantshow    # to show line numbers
+```nano
+# Show line numbers
+#set linenumbers
+set constantshow
+
+# Syntax hihglighting
+include "/usr/share/nano/nanorc.nanorc"
+include "/usr/share/nano/python.nanorc"
+include "/usr/share/nano/sh.nanorc"
+
+# Auto-indentation
 set autoindent
-set linenumbers
 ```
