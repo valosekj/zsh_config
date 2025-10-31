@@ -12,13 +12,6 @@ case `uname` in
     # Path to nano installed from brew
     alias nano='${HOMEBREW_CELLAR}/nano/7.1/bin/nano'
 
-    alias cd2='cd ../..'
-    alias cd3='cd ../../..'
-    alias cd4='cd ../../../..'
-
-    # Count files
-    alias countf='ls -1 ${1:-.} 2>/dev/null | wc -l'
-
     # copy the output of pwd to the clipboard (on MacOS)
     function pwdc() {
       printf "%s" "$PWD" | pbcopy
@@ -127,11 +120,15 @@ HISTFILE=~/.zsh_history
 alias nn='nano'
 alias fin='fslinfo'
 alias gag='git annex get'
+alias cd2='cd ../..'
 alias cd3='cd ../../..'
 alias cd4='cd ../../../..'
 alias l='ls -lath'
 alias ll='ls -lath'
 alias grep='grep --color=auto'
+
+# Count files
+alias countf='ls -1 ${1:-.} 2>/dev/null | wc -l'
 
 # Functions for ls in combination with head or tail commands with definable number of output lines
 function lh { if [ "$#" -eq 0 ];then num=10;else num=${1};fi; ls -lath | head -${num} }
