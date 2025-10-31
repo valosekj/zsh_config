@@ -16,6 +16,9 @@ case `uname` in
     alias cd3='cd ../../..'
     alias cd4='cd ../../../..'
 
+    # Count files
+    alias countf='ls -1 ${1:-.} 2>/dev/null | wc -l'
+
     # copy the output of pwd to the clipboard (on MacOS)
     function pwdc() {
       printf "%s" "$PWD" | pbcopy
