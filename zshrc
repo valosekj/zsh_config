@@ -20,6 +20,7 @@ case `uname` in
 
     export PATH=$PATH:$HOME/code
     export ZSH="$HOME/.oh-my-zsh"
+    export PATH=$PATH:$HOME/code/bin
     
     # oh-my-zsh plugins
     # Standard plugins can be found in $ZSH/plugins/
@@ -123,9 +124,17 @@ alias gag='git annex get'
 alias cd2='cd ../..'
 alias cd3='cd ../../..'
 alias cd4='cd ../../../..'
+alias cd5='cd ../../../../..'
+
 alias l='ls -lath'
 alias ll='ls -lath'
 alias grep='grep --color=auto'
+
+# typos
+alias cd..='cd ..'
+alias mdkir='mkdir'
+alias dc='cd'
+alias sl='ls'
 
 # Count files
 alias countf='ls -1 ${1:-.} 2>/dev/null | wc -l'
@@ -141,6 +150,21 @@ function header { sct_image -i ${1} -header }
 function orientation { sct_image -i ${1} -header | grep -E qform_[xyz] | awk '{printf "%s", substr($2, 1, 1)}' }
 function dim { sct_image -i ${1} -header | grep dim | head -n 1}
 function pixdim { sct_image -i ${1} -header | grep pixdim }
+
+function mkcd() {
+  mkdir -p "$1" && cd "$1"
+}
+
+# Source: https://codeberg.org/EvanHahn/dotfiles/src/branch/main/home/zsh/.config/zsh/aliases.zsh#L43
+function tempe () {
+  cd "$(mktemp -d)"
+  chmod -R 0700 .
+  if [[ $# -eq 1 ]]; then
+    \mkdir -p "$1"
+    cd "$1"
+    chmod -R 0700 .
+  fi
+}
 
 # Count columns in CSV or TSV files
 count_cols() {
