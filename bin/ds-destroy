@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+# Recursively deletes all .DS_Store files in a directory
+# Source: https://codeberg.org/EvanHahn/dotfiles/src/branch/main/home/bin/bin/ds-destroy
+
+set -e
+set -u
+set -o pipefail
+
+find . -name .DS_Store -delete
